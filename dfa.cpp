@@ -56,7 +56,7 @@ auto reading(const char *path) -> DFA
         std::istringstream alphabet(line);
         while (std::getline(alphabet, line, delimiter))
         {
-            M.alphabet.push_back(line[0]);
+            M.alphabet.push_back(line.front());
         }
 
         // getting the transitions of DFA
@@ -69,7 +69,7 @@ auto reading(const char *path) -> DFA
             {
                 str.push_back(line);
             }
-            M.transitions.push_back(str);
+            M.transitions.push_back(std::move(str));
         }
     }
     else
@@ -125,29 +125,23 @@ auto create_graph(DFA &M) -> graph
 }
 
 template<typename T>
-auto print_vector(std::vector<T> &v, int i) -> void {
-    if(i == 0) {
-        if (!v.empty())
-        {
-            std::cout << "{ ";
-            for (const T &t : v)
-                std::cout << t << " ";
-            std::cout << "}";
-        }
-        else {
-            std::cout << "{}\n";
-        }
+void print_vector(const std::vector<T>& v, int i) {
+    std::string left_delimiter, right_delimiter;
+    
+    if (i == 0) {
+        left_delimiter = "{ ";
+        right_delimiter = "}";
     } else {
-        if (!v.empty())
-        {
-            std::cout << "( ";
-            for (const T &t : v)
-                std::cout << t << " ";
-            std::cout << ") ";
-        }
-        else {
-            std::cout << "()\n";
-        }
+        left_delimiter = "( ";
+        right_delimiter = ")";
+    }
+
+    if (!v.empty())
+    {
+        std::cout << left_delimiter;
+        for (const T &t : v)
+            std::cout << t << " ";
+        std::cout << right_delimiter;
     }
 }
 
@@ -158,11 +152,11 @@ auto print_dfa(DFA &M) -> void
     std::cout << ", ";
     print_vector(M.states, 0);
     std::cout << ", { ";
-    for (int i = 0; i < M.transitions.size(); ++i)
+    for (const auto &transition : M.transitions)
     {
-        print_vector(M.transitions[i], 1);
+        print_vector(transition, 1);
     }
-    std::cout << "}, ";
+    std::cout << " }, ";
     std::cout << M.intital_state << ", ";
     print_vector(M.final_states, 0);
     std::cout << ")\n";
@@ -170,38 +164,20 @@ auto print_dfa(DFA &M) -> void
 
 auto next_state(graph &g, std::string state, char symbol) -> std::string
 {
-    for (transition &t : g[state])
-    {
-        if (std::get<1>(t) == symbol)
-        {
-            return std::get<0>(t);
-        }
-    }
-
+    for (const transition &t : g[state])
+        if (std::get<1>(t) == symbol) return std::get<0>(t);
     return " ";
 }
 
 auto Pe(DFA &M, graph &g, std::vector<char> &word) -> bool
 {
-    std::string state = M.intital_state;
-    for (int i = 0; i < word.size(); ++i)
-    {
-        if (state == " ")
-        {
-            return false;
-        }
-
-        state = next_state(g, state, word[i]);
+    auto state = M.intital_state;
+    for (const char &c : word) {
+        if (state == " ") return false;
+        state = next_state(g, state, c);
     }
 
-    if (std::count(M.final_states.begin(), M.final_states.end(), state))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return (std::count(M.final_states.begin(), M.final_states.end(), state))? true : false;
 }
 
 auto clear_screen() -> void
