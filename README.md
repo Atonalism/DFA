@@ -40,7 +40,7 @@ where \
 M = (alphabet, set of all states, set of transitions, initial state, set of final states)
 
 # Run
-In terminal, to compile, run:
+In the code directory, open the terminal and to compile run:
 
 g++ dfa.cpp -o name_exec
 
