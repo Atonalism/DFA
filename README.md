@@ -8,7 +8,7 @@ The first line has the initial state label; \
 The second line has all end state labels separated by space; \
 The third line has the labels of all the DFA states separated by space; \
 The fourth line has all the symbols that make up the DFA alphabet separated by spaces; \
-From the fifth line onwards, state transitions are defined as follows: "label of the state where the arrow comes from, label of the state that receives the arrow, symbol of the transition" \
+From the fifth line onwards, state transitions are defined as follows: "label of the state where the arrow comes from, label of the state that receives the arrow, symbol of the transition"
 
 generic example:
 
