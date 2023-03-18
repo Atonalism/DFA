@@ -125,7 +125,7 @@ auto create_graph(DFA &M) -> graph
 }
 
 template<typename T>
-void print_vector(const std::vector<T>& v, int i) {
+auto print_vector(const std::vector<T>& v, int i) -> void {
     std::string left_delimiter, right_delimiter;
     
     if (i == 0) {
