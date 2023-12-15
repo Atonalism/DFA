@@ -1,5 +1,5 @@
 # DFA
-A modest implementation of a DFA (Deterministic Finite Automata) that reads a user-supplied text input with the formal definition of a DFA. With the DFA read, the user can test whether words are part of the language defined by the provided ADF or not.
+A modest implementation of a DFA (Deterministic Finite Automata) that reads a user-supplied text input with the formal definition of a DFA. With the DFA read, the user can test whether words are part of the language defined by the provided DFA or not.
 
 # Input
 The input is a txt file named "input.txt". The file can be edited by the user to define any DFA following the format:
